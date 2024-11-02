@@ -18,7 +18,7 @@ class Quote:
 QUOTE_FIELDS = [field.name for field in fields(Quote)]
 
 
-def parse_single_quote(quote) -> Quote:
+def parse_single_quote(quote: BeautifulSoup) -> Quote:
     return Quote(
         text=quote.select_one(".text").text,
         author=quote.select_one(".author").text,
@@ -26,12 +26,12 @@ def parse_single_quote(quote) -> Quote:
     )
 
 
-def get_single_page_quotes(page_soup) -> [Quote]:
+def get_single_page_quotes(page_soup: BeautifulSoup) -> [Quote]:
     quotes = page_soup.select(".quote")
     return [parse_single_quote(quote) for quote in quotes]
 
 
-def get_all_quotes():
+def get_all_quotes() -> [Quote]:
     page_num = 1
     all_quotes = []
 
@@ -56,7 +56,6 @@ def write_quotes_to_csv_file(quotes: [Quote], output_csv_path: str) -> None:
         writer = csv.writer(file)
         writer.writerow(QUOTE_FIELDS)
         writer.writerows([astuple(quote) for quote in quotes])
-
 
 
 def main(output_csv_path: str) -> None:
